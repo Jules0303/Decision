@@ -1,0 +1,84 @@
+================================================================================
+PROJET D'AIDE MULTICRITÈRE À LA DÉCISION COLLECTIVE - ROCK EN SEINE
+================================================================================
+
+Groupe : Jules BOBO, Florent JIN, Victor CAI
+Sujet d'étude : Choix collectif et multicritère des formules de participation 
+                au festival Rock en Seine.
+
+--------------------------------------------------------------------------------
+1. FORMULATION SCIENTIFIQUE DU SUJET (PROPOSITIONS)
+--------------------------------------------------------------------------------
+
+Option A (Recommandée - très académique et complète) :
+« Aide à la décision collective et multicritère : Sélection et optimisation 
+  des formules de participation au festival Rock en Seine pour un groupe de 
+  trois décideurs. »
+
+Option B (Centrée sur le compromis et la négociation) :
+« Modélisation et résolution multicritère d'un problème de choix collectif : 
+  Recherche d'un compromis optimal entre préférences artistiques, contraintes 
+  temporelles et restrictions budgétaires pour le festival Rock en Seine. »
+
+Option C (Centrée sur les méthodes) :
+« Application comparée de méthodes d'agrégation et de surclassement à un 
+  problème de décision collective : Le cas du choix des billets pour Rock en Seine. »
+
+--------------------------------------------------------------------------------
+2. CADRAGE DU PROBLÈME (MODÉLISATION EN AMD)
+--------------------------------------------------------------------------------
+
+A. Les Décideurs (Acteurs du processus) :
+   - Jules (Décideur 1)
+   - Florent (Décideur 2)
+   - Victor (Décideur 3)
+   Chacun possède son propre système de valeurs (préférences pour les artistes, 
+   disponibilités, budget maximum).
+
+B. Les Alternatives (Ensemble des actions possibles A) :
+   L'ensemble des billets ou combinaisons de billets disponibles pour le festival :
+   - a1 : Pass 1 Jour - Vendredi
+   - a2 : Pass 1 Jour - Samedi
+   - a3 : Pass 1 Jour - Dimanche
+   - a4 : Pass 2 Jours - Vendredi + Samedi
+   - a5 : Pass 2 Jours - Samedi + Dimanche
+   - a6 : Pass 3 Jours (Vendredi + Samedi + Dimanche)
+   - a0 : Ne participer à aucune journée (alternative de statut quo)
+
+C. Les Critères d'Évaluation (Famille F) :
+   Pour évaluer chaque alternative, nous définissons les critères suivants :
+   1. Coût financier (g1) : Prix des billets/pass par personne (à minimiser).
+   2. Satisfaction artistique globale (g2) : Intérêt cumulé des artistes de la
+      programmation pour le groupe (à maximiser).
+      * Note : Peut être décomposé en 3 critères individuels (g_Jules, g_Florent,
+        g_Victor) pour modéliser les préférences de chacun.
+   3. Disponibilité temporelle (g3) : Compatibilité avec les contraintes 
+      d'emploi du temps de chacun (à maximiser / contrainte forte).
+   4. Confort logistique (g4) : Fatigue, transport de nuit, enchaînement des
+      jours (à maximiser / minimiser la fatigue).
+
+D. La Problématique de Référence :
+   - Problématique de Choix (P.alpha) : Trouver la meilleure formule de billet 
+     qui maximise la satisfaction collective sous contraintes.
+   - Problématique de Rangement (P.beta) : Classer toutes les alternatives de la 
+     meilleure à la moins bonne pour permettre une discussion de groupe.
+
+--------------------------------------------------------------------------------
+3. MÉTHODES ENVISAGÉES (CONFORMÉMENT AUX CONSIGNES DU COURS)
+--------------------------------------------------------------------------------
+
+Pour répondre aux exigences (au moins 2 méthodes, dont 1 d'agrégation et 1 de 
+surclassement) :
+
+1. Méthode d'agrégation (PAMC - Procédure d'Agrégation Multicritère) :
+   - Somme pondérée ou MAUT (Multiattribute Utility Theory) : Associer des notes 
+     d'utilité à chaque artiste pour chaque personne, puis agréger.
+   - Opérateur OWA (Ordered Weighted Averaging) ou Intégrale de Choquet : Pour 
+     modéliser des relations d'équité entre les membres (ex. éviter qu'un membre 
+     soit totalement insatisfait de la programmation).
+
+2. Méthode de surclassement (PRSC - Procédure de Surclassement) :
+   - ELECTRE I (pour le choix) ou ELECTRE III (pour le rangement avec pseudo-critères) :
+     Parfait pour modéliser des vetoes (ex. si Jules ne peut absolument pas venir 
+     le vendredi, le veto élimine les alternatives contenant le vendredi) et des 
+     seuils d'indifférence sur les prix ou les artistes.
