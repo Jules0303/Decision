@@ -16,26 +16,6 @@
     linkcolor=blue,
     filecolor=magenta,      
     urlcolor=cyan,
-    pdftitle={Rapport d'Aide à la Décision Multicritère - Rock en Seine}
-}
-
-
-% Packages standards
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[french]{babel}
-\usepackage{amsmath, amssymb, amsfonts}
-\usepackage{geometry}
-\geometry{hmargin=2.5cm,vmargin=3cm}
-\usepackage{booktabs} % Pour des tableaux professionnels
-\usepackage{tikz} % Pour les diagrammes et graphes
-\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,      
-    urlcolor=cyan,
     pdftitle={Rapport d'Aide à la Décision Multicritère - Rock en Seine},
     pdfpagemode=FullScreen,
 }
@@ -48,12 +28,12 @@
     \centering
     \vspace*{1.5cm}
     
-    {\large\scshape Université Paris-Dauphine - PSL}\\[0.5cm]
-    {\large\scshape Projet d'Aide Multicritère à la Décision}\\[1.5cm]
+    {\large\scshape Université Paris-Dauphine - PSL\par}\\[0.5cm]
+    {\large\scshape Projet d'Aide Multicritère à la Décision\par}\\[1.5cm]
     
     \rule{\linewidth}{0.8mm}\\[0.6cm]
-    {\huge\bfseries COMMENT CHOISIR NOS BILLETS POUR ROCK EN SEINE ?}\\[0.4cm]
-    {\large\itshape Application pratique des méthodes de la Somme Pondérée et d'ELECTRE I \\ pour résoudre notre dilemme de groupe}\\[0.6cm]
+    {\huge\bfseries COMMENT CHOISIR NOS BILLETS\par\vspace{0.2cm} POUR ROCK EN SEINE ?\par}\\[0.6cm]
+    {\large\itshape Application pratique des méthodes de la Somme Pondérée et d'ELECTRE I\par\vspace{0.2cm} pour résoudre notre dilemme de groupe\par}\\[0.6cm]
     \rule{\linewidth}{0.8mm}\\[2.5cm]
     
     \begin{minipage}{0.45\textwidth}
@@ -355,12 +335,12 @@ Pour trancher entre ces deux options, nous avons voté. Comme les billets préf�
 \label{sec:evaluation_ia}
 
 \subsection{Combien de fois et comment nous l'avons utilisée}
-Nous avons utilisé l'IA pour nous aider sur 4 points clés : structurer notre code Python pur pour faire tourner ELECTRE I, générer la syntaxe du graphe en TikZ pour notre rapport, mettre en forme nos tableaux sous LaTeX, et vérifier la cohérence mathématique de nos calculs.
+Nous avons utilisé l'IA pour nous aider sur 4 points clés : structurer notre code Python pour faire tourner ELECTRE I, générer la syntaxe du graphe pour notre rapport, mettre en forme nos tableaux sous LaTeX, et vérifier la cohérence de nos calculs.
 
 \subsection{Ce que nous avons dû corriger}
-L'IA a d'abord généré un code Python qui utilisait la bibliothèque \texttt{numpy}. Comme nous voulions un code simple et sans dépendances externes faciles à exécuter, nous l'avons réécrit en Python pur. De plus, au début, nous avions modélisé le problème avec des prix génériques de 75~€ par jour et un pass 3 jours à 185~€. L'IA a trouvé 3 noyaux (Mercredi, Jeudi, Samedi). En mettant à jour le modèle avec les prix réels de la billetterie officielle (allant de 89~€ à 99~€ la journée) et en remplaçant le pass 3 jours par le Pass 2 jours réel à 149~€, la modélisation a radicalement changé : le Mercredi s'est fait éliminer par dominance au profit du Samedi. L'IA nous a aidés à recalculer instantanément les nouvelles matrices de concordance et de discordance, et à corriger les arcs du graphe TikZ pour refléter ce nouveau scénario beaucoup plus réaliste.
+Les calculs du rapport ont été faits grâce au code Python, qui a été généré par l'IA. De même, les données de départ de la matrice avaient été écrites initialement par l'IA. Cependant, en faisant nos propres recherches sur la billetterie officielle, nous avons modifié le code Python pour y insérer les vraies valeurs. De plus, au début, nous avions modélisé le problème avec des prix génériques de 75~€ par jour et un pass 3 jours à 185~€, ce qui donnait 3 noyaux (Mercredi, Jeudi, Samedi). En insérant nos prix réels et le Pass 2 jours à 149~€, la modélisation a changé et a éliminé le Mercredi par dominance. Nous avons dû corriger nous-mêmes les calculs et les arcs du graphe pour refléter ce nouveau scénario réaliste.
 
 \subsection{Avantages et inconvénients}
-L'avantage principal est le gain de temps sur la programmation brute et la mise en page LaTeX (les tableaux professionnels et TikZ prennent beaucoup de temps à écrire à la main). L'inconvénient est qu'il faut rester très vigilant : l'IA a tendance à proposer des formules ou des codes génériques. Nous avons dû vérifier manuellement chaque ligne de calcul pour nous assurer qu'elle respectait scrupuleusement le formalisme du cours d'Aide à la Décision.
+L'avantage principal est le gain de temps sur la programmation et la structure globale du document LaTeX. Cependant, nous avons identifié plusieurs inconvénients majeurs. D'abord, la façon de rédiger de l'IA : si on ne lui donne pas des consignes extrêmement strictes, elle écrit de façon trop superflue, avec des expressions trop complexes qui sortent complètement du cadre de notre cours de Dauphine. Ensuite, la mise en page doit systématiquement être revue car l'IA n'a aucun visuel de ce que rend réellement le code LaTeX compilé (ce qui a provoqué des superpositions de texte). Enfin, il est indispensable d'être extrêmement précis sur le contexte et de vérifier chaque calcul pour qu'elle comprenne nos contraintes réelles.
 
 \end{document}
