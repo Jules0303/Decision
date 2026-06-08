@@ -1,12 +1,12 @@
 # Alternatives:
-# a1 : Mercredi (Me) - 75€
-# a2 : Jeudi (Je) - 75€
-# a3 : Vendredi (Ve) - 75€
-# a4 : Samedi (Sa) - 75€
-# a5 : Dimanche (Di) - 75€
-# a6 : Pass 3 Jours (Ve+Sa+Di) - 185€
+# a1 : Mercredi (Me) - 99€
+# a2 : Jeudi (Je) - 89€
+# a3 : Vendredi (Ve) - 94€
+# a4 : Samedi (Sa) - 94€
+# a5 : Dimanche (Di) - 99€
+# a6 : Pass 2 Jours (Ve+Sa) - 149€
 alternatives = [
-    "a1 (Me)", "a2 (Je)", "a3 (Ve)", "a4 (Sa)", "a5 (Di)", "a6 (3 Jours)"
+    "a1 (Me)", "a2 (Je)", "a3 (Ve)", "a4 (Sa)", "a5 (Di)", "a6 (2 Jours)"
 ]
 
 criteria_names = [
@@ -21,12 +21,12 @@ criteria_names = [
 
 # Original evaluation matrix (6 alternatives, 7 criteria)
 perf_matrix = [
-    [75.0,  4.0, 9.0, 5.0, 5.0, 5.0, 5.0],  # a1 (Me)
-    [75.0,  3.0, 4.0, 9.0, 5.0, 5.0, 5.0],  # a2 (Je)
-    [75.0,  8.0, 5.0, 4.0, 5.0, 1.0, 5.0],  # a3 (Ve)
-    [75.0,  5.0, 6.0, 6.0, 5.0, 5.0, 5.0],  # a4 (Sa)
-    [75.0,  9.0, 3.0, 7.0, 5.0, 5.0, 1.0],  # a5 (Di)
-    [185.0, 7.3, 4.7, 5.7, 5.0, 2.0, 2.0]   # a6 (3 Jours)
+    [99.0,  4.0, 9.0, 5.0, 5.0, 5.0, 5.0],  # a1 (Me)
+    [89.0,  3.0, 4.0, 9.0, 5.0, 5.0, 5.0],  # a2 (Je)
+    [94.0,  8.0, 5.0, 4.0, 5.0, 1.0, 5.0],  # a3 (Ve)
+    [94.0,  5.0, 6.0, 6.0, 5.0, 5.0, 5.0],  # a4 (Sa)
+    [99.0,  9.0, 3.0, 7.0, 5.0, 5.0, 1.0],  # a5 (Di)
+    [149.0, 6.5, 5.5, 5.0, 5.0, 2.0, 5.0]   # a6 (2 Jours)
 ]
 
 # Criteria weights
@@ -34,8 +34,8 @@ weights = [0.25, 0.15, 0.15, 0.15, 0.10, 0.10, 0.10]
 assert abs(sum(weights) - 1.0) < 1e-9
 
 # Normalize criteria to 0-10 scale
-# For cost: min cost = 75 (utility = 10), max cost = 185 (utility = 0)
-# Formula: u_1(a) = 10 * (185 - cost) / (185 - 75)
+# For cost: min cost = 89 (utility = 10), max cost = 149 (utility = 0)
+# Formula: u_1(a) = 10 * (149 - cost) / (149 - 89)
 # For artistic (already 0-10): u_j(a) = g_j(a)
 # For availability (0-5): u_j(a) = 2 * g_j(a)
 
@@ -43,7 +43,7 @@ normalized_matrix = []
 for row in perf_matrix:
     norm_row = [0.0] * 7
     # Cost
-    norm_row[0] = 10.0 * (185.0 - row[0]) / (185.0 - 75.0)
+    norm_row[0] = 10.0 * (149.0 - row[0]) / (149.0 - 89.0)
     # Artistic
     norm_row[1] = row[1]
     norm_row[2] = row[2]

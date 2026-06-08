@@ -17,6 +17,25 @@
     filecolor=magenta,      
     urlcolor=cyan,
     pdftitle={Rapport d'Aide à la Décision Multicritère - Rock en Seine},
+\documentclass[11pt,a4paper]{article}
+
+% Packages standards
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{geometry}
+\geometry{hmargin=2.5cm,vmargin=3cm}
+\usepackage{booktabs} % Pour des tableaux professionnels
+\usepackage{tikz} % Pour les diagrammes et graphes
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Rapport d'Aide à la Décision Multicritère - Rock en Seine},
     pdfpagemode=FullScreen,
 }
 \usepackage{float}
@@ -29,11 +48,11 @@
     \vspace*{1.5cm}
     
     {\large\scshape Université Paris-Dauphine - PSL}\\[0.5cm]
-    {\large\scshape Cours d'Aide Multicritère à la Décision}\\[1.5cm]
+    {\large\scshape Projet d'Aide Multicritère à la Décision}\\[1.5cm]
     
     \rule{\linewidth}{0.8mm}\\[0.6cm]
-    {\huge\bfseries PROJET D'AIDE À LA DÉCISION COLLECTIVE}\\[0.4cm]
-    {\large\itshape Application comparée de méthodes d'agrégation et de surclassement : \\ Le cas du choix des billets pour Rock en Seine}\\[0.6cm]
+    {\huge\bfseries COMMENT CHOISIR NOS BILLETS POUR ROCK EN SEINE ?}\\[0.4cm]
+    {\large\itshape Application pratique des méthodes de la Somme Pondérée et d'ELECTRE I \\ pour résoudre notre dilemme de groupe}\\[0.6cm]
     \rule{\linewidth}{0.8mm}\\[2.5cm]
     
     \begin{minipage}{0.45\textwidth}
@@ -62,7 +81,7 @@
         \begin{minipage}{0.85\linewidth}
             \centering
             \small\itshape
-            \textbf{Résumé :} Ce rapport présente l'application d'un processus d'aide multicritère à la décision collective (AMDC) visant à résoudre un problème concret : le choix des jours de participation au festival Rock en Seine pour un groupe de trois amis. Nous modélisons les préférences divergentes (Jules préférant le vendredi ou le dimanche, Florent le mercredi et Victor le jeudi) sous forme de critères. Nous appliquons et comparons deux approches théoriques fondamentales étudiées en cours : la méthode d'agrégation de la Somme Pondérée (procédure compensatoire) et la méthode de surclassement ELECTRE I (procédure non-compensatoire). Les résultats mettent en évidence l'existence de trois solutions stables distinctes (Mercredi, Jeudi et Samedi) sous forme de noyaux multiples, permettant ainsi d'éclairer la négociation collective du groupe.
+            \textbf{Résumé :} Tout a commencé après notre week-end mémorable au festival We Love Green au début du mois. Surexcités, nous avons immédiatement décidé de remettre ça pour Rock en Seine à la fin du mois d'août. Mais au moment de prendre nos places, nous nous sommes retrouvés dans une impasse complète : goûts artistiques différents, budgets serrés et contraintes de calendrier de chacun. Plutôt que de tirer à pile ou face, nous avons eu l'idée d'appliquer le cours d'Aide à la Décision (AMD) de Dauphine à notre propre problème. En comparant une méthode d'agrégation (la Somme Pondérée) et une méthode de surclassement (ELECTRE I), nous avons cherché à trouver scientifiquement le meilleur compromis. Ce rapport présente notre démarche et comment les résultats nous ont aidés à trancher.
         \end{minipage}
     \end{center}
     
@@ -73,87 +92,86 @@
 \newpage
 
 % ========================================== %
-% SECTION 1: INTRODUCTION ET MODÉLISATION   %
+% SECTION 1: NOTRE DILEMME ET SA MODÉLISATION %
 % ========================================== %
-\section{Présentation et modélisation du problème}
+\section{Notre problème et sa modélisation}
 \label{sec:presentation}
 
-\subsection{Contexte de la décision collective}
-Le choix de participer à un festival de musique comme Rock en Seine entre amis est une situation typique de décision collective multicritère. Le groupe est composé de trois décideurs : Jules ($D_1$), Florent ($D_2$) et Victor ($D_3$). Bien que le désir d'assister au festival soit partagé, des désaccords majeurs apparaissent concernant les jours de présence. Ces désaccords reposent sur plusieurs dimensions :
-\begin{itemize}
-    \item \textbf{La programmation artistique} : Chaque journée du festival propose une liste d'artistes différente. Les goûts musicaux des trois décideurs divergent : Jules préfère la programmation du vendredi ou du dimanche, Florent adore celle du mercredi et Victor a une nette préférence pour celle du jeudi.
-    \item \textbf{Le coût financier} : Le prix unitaire d'un billet d'une journée est de 75~€, tandis que le Pass 3 jours est proposé au tarif de 185~€ (économie de 40~€).
-    \item \textbf{Les disponibilités temporelles} : Des contraintes professionnelles ou personnelles limitent la liberté de chacun (Florent travaille le vendredi soir, Victor a un repas de famille obligatoire le dimanche).
-\end{itemize}
+\subsection{D'où vient la question ?}
+Lors de notre récent week-end à We Love Green, nous avons adoré l'ambiance et nous avons décidé de nous organiser pour le festival Rock en Seine 2026, qui se déroule à la fin du mois (du 26 au 30 août). Cependant, dès les premières discussions, nous nous sommes rendu compte que concilier nos envies n'allait pas être simple. 
 
-L'objectif de cette étude est d'appliquer un processus d'aide à la décision afin de recommander la formule de billet la plus adaptée au groupe (problématique de choix, notée $P.\alpha$).
+En effet, nos préférences artistiques divergent fortement : Jules veut absolument voir les groupes du vendredi ou du dimanche, Florent veut absolument y aller le mercredi pour ses artistes préférés, tandis que Victor préfère le jeudi. En plus de cela, nous avons chacun des contraintes d'emploi du temps personnelles : Florent travaille le vendredi soir (ce qui complique sa venue), tandis que Victor a un repas de famille incontournable le dimanche. De plus, notre budget n'est pas illimité, et l'achat d'un pass 2 jours représente une dépense importante par rapport à un billet à la journée.
 
-\subsection{Identification des alternatives (Ensemble des actions $A$)}
-Nous identifions les alternatives comme étant les différentes formules de billets ou combinaisons de jours envisageables pour le groupe. Compte tenu des préférences exprimées, nous considérons l'ensemble des actions $A = \{a_1, a_2, a_3, a_4, a_5, a_6\}$ défini de la manière suivante :
+Pour résoudre ce problème de choix collectif (problématique de choix $P.\alpha$), nous avons modélisé notre décision en utilisant les outils de l'Aide Multicritère à la Décision (AMD) vus en cours à Dauphine.
+
+\subsection{Nos alternatives (les actions possibles $A$)}
+Nous avons listé les formules de billets réalistes pour notre groupe de trois. Nous avons retenu 6 alternatives (ou actions) qui constituent notre ensemble $A = \{a_1, a_2, a_3, a_4, a_5, a_6\}$ :
 \begin{itemize}
     \item $a_1$ : Billet 1 Jour - Mercredi (Me)
     \item $a_2$ : Billet 1 Jour - Jeudi (Je)
     \item $a_3$ : Billet 1 Jour - Vendredi (Ve)
-    \item $a_4$ : Billet 1 Jour - Samedi (Sa) (journée intermédiaire de consensus)
+    \item $a_4$ : Billet 1 Jour - Samedi (Sa) (une journée neutre qui pourrait servir de compromis)
     \item $a_5$ : Billet 1 Jour - Dimanche (Di)
-    \item $a_6$ : Pass 3 Jours - Vendredi + Samedi + Dimanche (3 Jours)
+    \item $a_6$ : Pass 2 Jours - Vendredi + Samedi (2 Jours)
 \end{itemize}
 
-\subsection{Famille de critères d'évaluation ($F$)}
-Pour évaluer et comparer ces alternatives de manière structurée et lisible, nous définissons une famille cohérente de $p = 7$ critères, notée $F = \{g_1, g_2, g_3, g_4, g_5, g_6, g_7\}$ :
+\subsection{Nos critères d'évaluation ($F$)}
+Pour évaluer ces options, nous avons défini 7 critères qui reflètent nos préoccupations ($F = \{g_1, \dots, g_7\}$) :
 \begin{enumerate}
-    \item \textbf{Coût financier ($g_1$)} : Prix unitaire du billet ou pass en euros (critère quantitatif à minimiser).
-    \item \textbf{Satisfaction artistique Jules ($g_2$)} : Appréciation qualitative de la programmation musicale par Jules sur une échelle de 0 à 10, à maximiser.
-    \item \textbf{Satisfaction artistique Florent ($g_3$)} : Appréciation de la programmation par Florent (échelle 0-10, à maximiser).
-    \item \textbf{Satisfaction artistique Victor ($g_4$)} : Appréciation de la programmation par Victor (échelle 0-10, à maximiser).
-    \item \textbf{Disponibilité Jules ($g_5$)} : Facilité logistique et temporelle pour Jules d'assister au festival pour la formule choisie, évaluée sur une échelle de 0 (impossible) à 5 (parfaite disponibilité), à maximiser.
-    \item \textbf{Disponibilité Florent ($g_6$)} : Disponibilité temporelle de Florent (échelle 0-5, à maximiser).
-    \item \textbf{Disponibilité Victor ($g_7$)} : Disponibilité temporelle de Victor (échelle 0-5, à maximiser).
+    \item \textbf{Le coût financier ($g_1$)} : Le prix du billet ou du pass en euros (donnée objective tirée du site officiel de Rock en Seine, à minimiser).
+    \item \textbf{La satisfaction de Jules ($g_2$)} : Note de 0 à 10 donnée par Jules sur la programmation des artistes de chaque option (à maximiser).
+    \item \textbf{La satisfaction de Florent ($g_3$)} : Note artistique de 0 à 10 donnée par Florent (à maximiser).
+    \item \textbf{La satisfaction de Victor ($g_4$)} : Note artistique de 0 à 10 donnée par Victor (à maximiser).
+    \item \textbf{La disponibilité de Jules ($g_5$)} : Note de 0 (impossible) à 5 (disponibilité parfaite) traduisant l'agenda de Jules pour chaque formule (à maximiser).
+    \item \textbf{La disponibilité de Florent ($g_6$)} : Note de disponibilité de 0 à 5 pour Florent (à maximiser).
+    \item \textbf{La disponibilité de Victor ($g_7$)} : Note de disponibilité de 0 à 5 pour Victor (à maximiser).
 \end{enumerate}
 
 ---
 
-\section{Données collectées et normalisation}
+\section{Données et normalisation}
 \label{sec:donnees}
 
-\subsection{Évaluations des alternatives (Matrice de performance)}
-Le tableau~\ref{tab:perf_original} présente la matrice d'évaluation des 6 alternatives sur les 7 critères.
+\subsection{Nos évaluations (Matrice de performance)}
+Les tarifs réels des billets ont été relevés sur la billetterie du site officiel de Rock en Seine (\url{https://www.rockenseine.com}). Le prix varie selon les jours : les billets du mercredi et du dimanche sont à 99~€, ceux du jeudi à 89~€, et ceux du vendredi et du samedi à 94~€. Le Pass 2 jours (vendredi + samedi) est vendu à 149~€. Pour cette étude, nous considérons que le dimanche n'est pas encore complet.
+
+Le tableau~\ref{tab:perf_original} récapitule nos évaluations pour chaque critère.
 
 \begin{table}[H]
   \centering
-  \caption{Tableau des performances initiales (matrice d'évaluation)}
+  \caption{Tableau de nos performances initiales (matrice d'évaluation)}
   \label{tab:perf_original}
   \begin{tabular}{lccccccc}
     \toprule
     Alternative & $g_1$ (Coût) & $g_2$ (Jules) & $g_3$ (Florent) & $g_4$ (Victor) & $g_5$ (Disp. J) & $g_6$ (Disp. F) & $g_7$ (Disp. V) \\
     \midrule
-    a1 (Me) & 75~€ & 4.0/10 & 9.0/10 & 5.0/10 & 5.0/5 & 5.0/5 & 5.0/5 \\
-    a2 (Je) & 75~€ & 3.0/10 & 4.0/10 & 9.0/10 & 5.0/5 & 5.0/5 & 5.0/5 \\
-    a3 (Ve) & 75~€ & 8.0/10 & 5.0/10 & 4.0/10 & 5.0/5 & 1.0/5 & 5.0/5 \\
-    a4 (Sa) & 75~€ & 5.0/10 & 6.0/10 & 6.0/10 & 5.0/5 & 5.0/5 & 5.0/5 \\
-    a5 (Di) & 75~€ & 9.0/10 & 3.0/10 & 7.0/10 & 5.0/5 & 5.0/5 & 1.0/5 \\
-    a6 (3 Jours) & 185~€ & 7.3/10 & 4.7/10 & 5.7/10 & 5.0/5 & 2.0/5 & 2.0/5 \\
+    a1 (Me) & 99~€ & 4.0/10 & 9.0/10 & 5.0/10 & 5.0/5 & 5.0/5 & 5.0/5 \\
+    a2 (Je) & 89~€ & 3.0/10 & 4.0/10 & 9.0/10 & 5.0/5 & 5.0/5 & 5.0/5 \\
+    a3 (Ve) & 94~€ & 8.0/10 & 5.0/10 & 4.0/10 & 5.0/5 & 1.0/5 & 5.0/5 \\
+    a4 (Sa) & 94~€ & 5.0/10 & 6.0/10 & 6.0/10 & 5.0/5 & 5.0/5 & 5.0/5 \\
+    a5 (Di) & 99~€ & 9.0/10 & 3.0/10 & 7.0/10 & 5.0/5 & 5.0/5 & 1.0/5 \\
+    a6 (2 Jours) & 149~€ & 6.5/10 & 5.5/10 & 5.0/10 & 5.0/5 & 2.0/5 & 5.0/5 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\textbf{Justification des données :}
+\textbf{Justification de nos notes :}
 \begin{itemize}
-    \item \textbf{Satisfaction artistique} : Établie selon l'intérêt des têtes d'affiche par jour. Le mercredi plaît particulièrement à Florent (9.0). Le jeudi plaît beaucoup à Victor (9.0). Le vendredi et le dimanche plaisent à Jules (respectivement 8.0 et 9.0). Le samedi est une journée de compromis neutre pour le groupe (Jules 5.0, Florent 6.0, Victor 6.0). La note du Pass 3 jours correspond à la moyenne des journées incluses (Vendredi, Samedi, Dimanche).
-    \item \textbf{Disponibilité} : Jules est totalement libre (5/5 partout). Florent travaille le vendredi, sa disponibilité ce jour-là est très faible (1/5) et moyenne pour le pass (2/5). Victor ayant un repas de famille obligatoire le dimanche, sa disponibilité est de 1/5 ce jour-là et 2/5 pour le pass.
+    \item \textbf{Artistique} : Notes attribuées par chacun d'entre nous selon l'intérêt qu'il porte aux têtes d'affiche de chaque journée. Le samedi est une journée de consensus moyen (Jules 5, Florent 6, Victor 6). La note du Pass 2 jours (Ve+Sa) est la moyenne des notes artistiques des deux jours inclus (vendredi et samedi).
+    \item \textbf{Disponibilité} : Jules est libre tout le temps (5/5). Florent travaille le vendredi soir (disponibilité de 1/5 pour le vendredi, et 2/5 pour le pass de 2 jours car il raterait le début du vendredi). Victor a son repas de famille le dimanche (disponibilité de 1/5 le dimanche), mais il est pleinement disponible le vendredi et le samedi (donc 5/5 pour le Pass 2 jours).
 \end{itemize}
 
-\subsection{Normalisation des critères}
-Pour pouvoir appliquer des méthodes d'agrégation, il est nécessaire de ramener l'ensemble des critères sur une échelle de valeur commune $[0, 10]$ :
+\subsection{Mise à l'échelle (Normalisation)}
+Pour pouvoir calculer des scores globaux et comparer les options, nous devons mettre toutes les notes sur une même échelle de 0 à 10 :
 \begin{itemize}
-    \item \textbf{Critère de Coût ($g_1$, à minimiser)} : Nous utilisons la transformation linéaire inverse :
-    $$u_1(a) = 10 \times \frac{g_1^{\max} - g_1(a)}{g_1^{\max} - g_1^{\min}} = 10 \times \frac{185 - g_1(a)}{185 - 75}$$
-    Un coût de 75~€ (le plus bas) donne une utilité de 10, et un coût de 185~€ (le plus élevé) donne une utilité de 0.
-    \item \textbf{Critères artistiques ($g_2, g_3, g_4$, à maximiser)} : Déjà évalués sur $[0, 10]$, donc $u_j(a) = g_j(a)$ pour $j \in \{2, 3, 4\}$.
-    \item \textbf{Critères de disponibilité ($g_5, g_6, g_7$, à maximiser)} : Évalués sur $[0, 5]$. On multiplie par 2 pour obtenir une note sur $[0, 10]$ : $u_j(a) = 2 \times g_j(a)$ pour $j \in \{5, 6, 7\}$.
+    \item \textbf{Coût ($g_1$, à minimiser)} : Nous utilisons une interpolation linéaire inverse :
+    $$u_1(a) = 10 \times \frac{g_1^{\max} - g_1(a)}{g_1^{\max} - g_1^{\min}} = 10 \times \frac{149 - g_1(a)}{149 - 89}$$
+    Un coût de 89~€ (le plus bas) donne une utilité de 10, tandis qu'un coût de 149~€ (le plus cher) donne une utilité de 0.
+    \item \textbf{Artistique ($g_2, g_3, g_4$)} : Déjà noté sur 10, donc $u_j(a) = g_j(a)$.
+    \item \textbf{Disponibilité ($g_5, g_6, g_7$)} : Noté sur 5. Nous multiplions par 2 pour passer sur 10 : $u_j(a) = 2 \times g_j(a)$.
 \end{itemize}
 
-Le tableau~\ref{tab:perf_normalized} présente la matrice des utilités normalisées.
+Le tableau~\ref{tab:perf_normalized} présente notre matrice d'utilités normalisées.
 
 \begin{table}[H]
   \centering
@@ -163,33 +181,33 @@ Le tableau~\ref{tab:perf_normalized} présente la matrice des utilités normalis
     \toprule
     Alternative & $u_1$ (Coût) & $u_2$ (Jules) & $u_3$ (Florent) & $u_4$ (Victor) & $u_5$ (Disp. J) & $u_6$ (Disp. F) & $u_7$ (Disp. V) \\
     \midrule
-    a1 (Me) & 10.00 & 4.00 & 9.00 & 5.00 & 10.00 & 10.00 & 10.00 \\
+    a1 (Me) & 8.33 & 4.00 & 9.00 & 5.00 & 10.00 & 10.00 & 10.00 \\
     a2 (Je) & 10.00 & 3.00 & 4.00 & 9.00 & 10.00 & 10.00 & 10.00 \\
-    a3 (Ve) & 10.00 & 8.00 & 5.00 & 4.00 & 10.00 & 2.00 & 10.00 \\
-    a4 (Sa) & 10.00 & 5.00 & 6.00 & 6.00 & 10.00 & 10.00 & 10.00 \\
-    a5 (Di) & 10.00 & 9.00 & 3.00 & 7.00 & 10.00 & 10.00 & 2.00 \\
-    a6 (3 Jours) & 0.00 & 7.30 & 4.70 & 5.70 & 10.00 & 4.00 & 4.00 \\
+    a3 (Ve) & 9.17 & 8.00 & 5.00 & 4.00 & 10.00 & 2.00 & 10.00 \\
+    a4 (Sa) & 9.17 & 5.00 & 6.00 & 6.00 & 10.00 & 10.00 & 10.00 \\
+    a5 (Di) & 8.33 & 9.00 & 3.00 & 7.00 & 10.00 & 10.00 & 2.00 \\
+    a6 (2 Jours) & 0.00 & 6.50 & 5.50 & 5.00 & 10.00 & 4.00 & 10.00 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\subsection{Détermination des poids des critères}
-La distribution de poids retenue est (la somme des poids est égale à $1.0$) :
+\subsection{Importance de nos critères (Poids)}
+Nous nous sommes mis d'accord sur la répartition de poids suivante (la somme des poids vaut 1.0) :
 \begin{itemize}
-    \item \textbf{Coût ($g_1$)} : $w_1 = 0.25$.
-    \item \textbf{Programmation artistique ($g_2, g_3, g_4$)} : $w_2 = w_3 = w_4 = 0.15$ chacun (total de $0.45$).
-    \item \textbf{Disponibilité ($g_5, g_6, g_7$)} : $w_5 = w_6 = w_7 = 0.10$ chacun (total de $0.30$).
+    \item \textbf{Le coût ($g_1$)} : Poids de $w_1 = 0.25$ (le budget reste une contrainte forte).
+    \item \textbf{Les goûts artistiques ($g_2, g_3, g_4$)} : Poids de $w_2 = w_3 = w_4 = 0.15$ chacun (total de $0.45$ pour la programmation).
+    \item \textbf{Les disponibilités ($g_5, g_6, g_7$)} : Poids de $w_5 = w_6 = w_7 = 0.10$ chacun (total de $0.30$ pour les contraintes de temps).
 \end{itemize}
 
 ---
 
-\section{Résolution par la méthode de la Somme Pondérée}
+\section{Résultats avec la méthode de la Somme Pondérée}
 \label{sec:somme_ponderee}
 
-La méthode de la Somme Pondérée calcule le score global de chaque alternative $a$ par la formule :
+La méthode de la Somme Pondérée permet de calculer une note globale pour chaque option $a$ selon la formule simple :
 $$S(a) = \sum_{k=1}^{7} w_k \times u_k(a)$$
 
-Le tableau~\ref{tab:ranking_ws} présente les scores globaux obtenus pour chaque alternative ainsi que le classement qui en découle.
+Le tableau~\ref{tab:ranking_ws} présente le score final de chaque alternative et le classement qui en découle.
 
 \begin{table}[H]
   \centering
@@ -199,41 +217,41 @@ Le tableau~\ref{tab:ranking_ws} présente les scores globaux obtenus pour chaque
     \toprule
     Rang & Alternative & Score global \\
     \midrule
-    1 & a1 (Me) & 8.200 \\
-    2 & a4 (Sa) & 8.050 \\
-    3 & a2 (Je) & 7.900 \\
-    4 & a5 (Di) & 7.550 \\
-    5 & a3 (Ve) & 7.250 \\
-    6 & a6 (3 Jours) & 4.455 \\
+    1 & a2 (Je) & 7.900 \\
+    2 & a4 (Sa) & 7.842 \\
+    3 & a1 (Me) & 7.783 \\
+    4 & a5 (Di) & 7.133 \\
+    5 & a3 (Ve) & 7.042 \\
+    6 & a6 (2 Jours) & 4.950 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\textbf{Analyse du classement :}
-La somme pondérée place le Mercredi ($a_1$) en tête (score 8.200), suivi de près par le Samedi ($a_4$, 8.050) et le Jeudi ($a_2$, 7.900). Le Pass 3 jours ($a_6$) ferme la marche avec un faible score dû à son prix élevé et à l'effet cumulé des contraintes logistiques.
+\textbf{Ce que nous en tirons :}
+Selon la somme pondérée, le Jeudi ($a_2$) passe en tête (score 7.900), suivi de très près par le Samedi ($a_4$, 7.842) et le Mercredi ($a_1$, 7.783). Le Pass 2 jours ($a_6$) finit dernier avec un score très bas de 4.950 à cause de son prix élevé de 149~€ (utilité de coût à 0) et des horaires compliqués de Florent le vendredi.
 
-\textbf{Écueil de la méthode} : Elle est \textbf{compensatoire}. Le dimanche ($a_5$) et le vendredi ($a_3$) se classent devant le Pass 3 jours malgré les indisponibilités de Victor (dimanche) et Florent (vendredi). La méthode masque le fait que l'un des amis ne peut pas assister à ces journées.
+\textbf{La limite majeure de cette méthode} : C'est une méthode \textbf{compensatoire}. Les bonnes notes artistiques de Jules ou le faible coût compensent le fait que l'un d'entre nous est indisponible. Par exemple, le dimanche ($a_5$) et le vendredi ($a_3$) sont classés devant le Pass 2 jours, alors que concrètement, Victor ne peut pas venir le dimanche et Florent ne peut pas venir le vendredi. La somme pondérée masque ces "points bloquants".
 
 ---
 
-\section{Résolution par la méthode de surclassement ELECTRE I}
+\section{Résultats avec la méthode ELECTRE I}
 \label{sec:electre}
 
-La méthode ELECTRE I permet d'établir une relation de surclassement $aSb$ (« $a$ est au moins aussi bon que $b$ ») en combinant concordance et non-discordance (seuil de veto).
+Pour éviter que des contraintes éliminatoires soient compensées par de bonnes notes ailleurs, nous appliquons ELECTRE I. Cette méthode s'appuie sur deux notions : la concordance (vérifier qu'une majorité de critères soutient que l'option $a$ est au moins aussi bonne que $b$) et la non-discordance (s'assurer qu'aucun critère ne présente un écart inacceptable qui ferait "veto").
 
-\subsection{Modélisation des seuils de veto}
-Nous définissons des seuils de veto $v_k$ sur l'échelle $[0, 10]$ :
+\subsection{Choix de nos seuils de veto}
+Nous fixons des seuils de veto $v_k$ sur notre échelle de 0 à 10 :
 \begin{itemize}
-    \item \textbf{Veto sur le Coût ($v_1 = 9.0$)}.
-    \item \textbf{Veto sur l'intérêt artistique ($v_2 = v_3 = v_4 = 6.0$)}.
-    \item \textbf{Veto sur la disponibilité ($v_5 = v_6 = v_7 = 5.0$)} : Si la disponibilité d'un membre baisse d'une valeur de 2.5 ou plus sur l'échelle 0-5 (soit 5.0 d'écart d'utilité normalisée), un veto bloque la comparaison.
+    \item \textbf{Veto sur le Coût} : $v_1 = 9.0$. Un écart extrême de prix peut bloquer le choix.
+    \item \textbf{Veto sur l'intérêt artistique} : $v_2 = v_3 = v_4 = 6.0$. Si la note artistique d'un membre chute de plus de 6 points par rapport à une autre option, il oppose son veto.
+    \item \textbf{Veto sur la disponibilité} : $v_5 = v_6 = v_7 = 5.0$. Sur l'échelle normalisée, cela correspond à une différence de 2.5 sur 5. Si quelqu'un est trop peu disponible (note de 1/5, soit 2/10 en utilité), l'écart avec une pleine disponibilité (10/10) dépasse 5.0 et déclenche un veto. C'est parfait pour éliminer les jours impossibles.
 \end{itemize}
 
-\subsection{Indice de concordance $C(a_i, a_j)$}
-L'indice de concordance $C(a_i, a_j)$ est défini par :
+\subsection{Calcul de la concordance $C(a_i, a_j)$}
+L'indice de concordance représente la somme des poids des critères pour lesquels l'option $a_i$ fait au moins aussi bien que $a_j$ :
 $$C(a_i, a_j) = \sum_{k: u_k(a_i) \ge u_k(a_j)} w_k$$
 
-La matrice de concordance calculée est présentée dans le tableau~\ref{tab:concordance}.
+La matrice de concordance calculée par notre programme figure dans le tableau~\ref{tab:concordance}.
 
 \begin{table}[H]
   \centering
@@ -243,18 +261,18 @@ La matrice de concordance calculée est présentée dans le tableau~\ref{tab:con
     \toprule
     & $a_1$ & $a_2$ & $a_3$ & $a_4$ & $a_5$ & $a_6$ \\
     \midrule
-    $a_1$ & 1.00 & 0.85 & 0.85 & 0.70 & 0.70 & 0.70 \\
+    $a_1$ & 1.00 & 0.60 & 0.60 & 0.45 & 0.70 & 0.85 \\
     $a_2$ & 0.70 & 1.00 & 0.70 & 0.70 & 0.85 & 0.70 \\
-    $a_3$ & 0.60 & 0.75 & 1.00 & 0.60 & 0.60 & 0.75 \\
-    $a_4$ & 0.85 & 0.85 & 0.85 & 1.00 & 0.70 & 0.85 \\
-    $a_5$ & 0.75 & 0.60 & 0.75 & 0.75 & 1.00 & 0.75 \\
-    $a_6$ & 0.40 & 0.40 & 0.35 & 0.25 & 0.35 & 1.00 \\
+    $a_3$ & 0.60 & 0.50 & 1.00 & 0.60 & 0.60 & 0.60 \\
+    $a_4$ & 0.85 & 0.60 & 0.85 & 1.00 & 0.70 & 0.85 \\
+    $a_5$ & 0.75 & 0.35 & 0.50 & 0.50 & 1.00 & 0.75 \\
+    $a_6$ & 0.50 & 0.50 & 0.60 & 0.35 & 0.35 & 1.00 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\subsection{Indice de discordance et effet de veto}
-Un veto est activé pour l'affirmation $a_i S a_j$ si $u_k(a_j) - u_k(a_i) > v_k$ pour au moins un critère $k$. Le tableau~\ref{tab:discordance} présente la matrice de discordance (1 = Veto activé, 0 = Pas de veto).
+\subsection{Matrice de discordance (Veto)}
+Si $u_k(a_j) - u_k(a_i) > v_k$ pour au moins un critère $k$, alors $a_i$ ne peut pas surclasser $a_j$ (effet de veto). Le tableau~\ref{tab:discordance} présente les vetos activés (1 = Veto activé, 0 = Aucun veto).
 
 \begin{table}[H]
   \centering
@@ -268,25 +286,25 @@ Un veto est activé pour l'affirmation $a_i S a_j$ si $u_k(a_j) - u_k(a_i) > v_k
     $a_2$ & 0 & 0 & 0 & 0 & 0 & 0 \\
     $a_3$ & 1 & 1 & 0 & 1 & 1 & 0 \\
     $a_4$ & 0 & 0 & 0 & 0 & 0 & 0 \\
-    $a_5$ & 1 & 1 & 1 & 1 & 0 & 0 \\
+    $a_5$ & 1 & 1 & 1 & 1 & 0 & 1 \\
     $a_6$ & 1 & 1 & 1 & 1 & 1 & 0 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-L'analyse de cette matrice montre que :
+\textbf{Analyse des vetos :}
 \begin{itemize}
-    \item $a_3$ (Vendredi) subit un veto à cause de l'indisponibilité de Florent le vendredi ($u_6 = 2$).
-    \item $a_5$ (Dimanche) subit un veto à cause de l'indisponibilité de Victor le dimanche ($u_7 = 2$).
-    \item Le Pass 3 jours ($a_6$) subit des vetoes systématiques à cause de son prix et de son incompatibilité avec Florent (le vendredi) et Victor (le dimanche).
-    \item $a_1$ (Me), $a_2$ (Je) et $a_4$ (Sa) ne subissent **aucun veto** de la part des autres alternatives.
+    \item $a_3$ (Vendredi) subit un veto en raison de l'indisponibilité de Florent ($u_6 = 2$).
+    \item $a_5$ (Dimanche) subit un veto en raison de l'indisponibilité de Victor ($u_7 = 2$).
+    \item Le Pass 2 jours ($a_6$) subit des vetos de la part des options individuelles à cause de son prix et de la disponibilité réduite de Florent le vendredi ($u_6 = 4$).
+    \item Les alternatives $a_1$ (Me), $a_2$ (Je) et $a_4$ (Sa) ne subissent \textbf{aucun veto} de la part des autres alternatives.
 \end{itemize}
 
-\subsection{Graphe de surclassement et noyaux multiples}
-La relation de surclassement globale $a_i S a_j$ est définie par le franchissement d'un seuil de concordance $\gamma$ et l'absence de veto :
+\subsection{Graphe de surclassement et noyaux du problème}
+Une option $a_i$ surclasse $a_j$ (noté $a_i S a_j$) si la concordance est supérieure ou égale à un seuil $\gamma$ et s'il n'y a aucun veto :
 $$a_i S a_j \iff C(a_i, a_j) \ge \gamma \quad \text{et} \quad \text{Discordance}(a_i, a_j) = 0$$
 
-Pour le seuil de concordance $\gamma = 0.60$, les alternatives $a_1$ (Me), $a_2$ (Je) et $a_4$ (Sa) surclassent toutes les alternatives du graphe et se surclassent mutuellement en formant un cycle de surclassement complet. La figure~\ref{fig:graphe_surclassement} illustre ce graphe de surclassement, qui se révèle particulièrement clair et structuré.
+Pour un seuil de concordance $\gamma = 0.60$, nous obtenons le graphe de surclassement de la figure~\ref{fig:graphe_surclassement}.
 
 \begin{figure}[H]
   \centering
@@ -294,83 +312,54 @@ Pour le seuil de concordance $\gamma = 0.60$, les alternatives $a_1$ (Me), $a_2$
     node distance=2.5cm,
     main node/.style={circle, draw, minimum size=1.4cm, font=\bfseries}
   ]
-    % Les trois alternatives dominantes (triangle supérieur)
     \node[main node] (a1) at (0, 3) {$a_1$};
     \node[main node] (a2) at (5, 3) {$a_2$};
     \node[main node] (a4) at (2.5, 1) {$a_4$};
-
-    % Les trois alternatives dominées/veto (niveau inférieur)
     \node[main node] (a3) at (0, -1.5) {$a_3$};
     \node[main node] (a5) at (5, -1.5) {$a_5$};
     \node[main node] (a6) at (2.5, -4) {$a_6$};
-
-    % Cycles symétriques (double-flèches) entre les gagnants a1, a2, a4
-    \path[<->, >=Stealth, thick]
-      (a1) edge (a2)
-      (a1) edge (a4)
-      (a2) edge (a4);
-      
-    % Flèches de surclassement vers les dominés (en gris pour la lisibilité)
-    \path[->, >=Stealth, thick, gray]
-      (a1) edge (a3)
-      (a1) edge [bend right=15] (a6)
-      (a2) edge (a5)
-      (a2) edge [bend left=15] (a6)
-      (a4) edge (a3)
-      (a4) edge (a5)
-      (a4) edge (a6);
-      
-    % Flèches complémentaires entre dominés
-    \path[->, >=Stealth, thick, gray]
-      (a3) edge (a6)
-      (a5) edge (a6);
-      
-    % Flèches croisées de surclassement
-    \path[->, >=Stealth, thick, gray]
-      (a1) edge (a5)
-      (a2) edge (a3);
-
+    \path[<->, >=Stealth, thick] (a1) edge (a2) (a2) edge (a4);
+    \path[->, >=Stealth, thick] (a4) edge (a1);
+    \path[->, >=Stealth, thick, gray] (a1) edge (a3) (a1) edge [bend right=15] (a6) (a2) edge (a5) (a2) edge [bend left=15] (a6) (a4) edge (a3) (a4) edge (a5) (a4) edge (a6) (a3) edge (a6) (a1) edge (a5) (a2) edge (a3);
   \end{tikzpicture}
   \caption{Graphe de surclassement ELECTRE I pour $\gamma = 0.60$}
   \label{fig:graphe_surclassement}
 \end{figure}
 
-Le calcul des noyaux du graphe donne trois noyaux distincts de taille minimale égale à 1 :
-$$K_1 = \{a_1 \text{ (Mercredi)}\}, \quad K_2 = \{a_2 \text{ (Jeudi)}\}, \quad K_3 = \{a_4 \text{ (Samedi)}\}$$
-
-Chacune de ces trois alternatives surclasse à elle seule toutes les autres alternatives hors de son noyau.
+L'analyse de ce graphe montre que $a_2$ (Jeudi) et $a_4$ (Samedi) dominent toutes les autres options et se surclassent mutuellement en formant un cycle stable. En revanche, le Mercredi ($a_1$) est surclassé par le Samedi ($a_4$) de manière asymétrique ($C(a_4, a_1)=0.85$ alors que $C(a_1, a_4)=0.45$). L'analyse des noyaux stables du graphe nous donne donc deux noyaux distincts d'un seul élément :
+$$K_1 = \{a_2 \text{ (Jeudi)}\}, \quad K_2 = \{a_4 \text{ (Samedi)}\}$$
 
 ---
 
-\section{Analyse comparative et discussion critique}
+\section{Comparaison de nos résultats et choix final}
 \label{sec:comparaison}
 
-\subsection{L'effet de la compensation}
-La Somme Pondérée masque les contraintes réelles sous l'effet de la compensation. Les alternatives $a_3$ (Vendredi) et $a_5$ (Dimanche) sont proposées en milieu de classement alors que Florent et Victor ne peuvent pas y assister. 
-Dans ELECTRE I, les vetoes sur les disponibilités neutralisent immédiatement les options à contraintes fortes (Vendredi, Dimanche, Pass 3 jours), ce qui garantit le respect des contraintes absolues de chaque participant.
+\subsection{Pourquoi ELECTRE I a sauvé nos plans ?}
+La Somme Pondérée a failli nous orienter vers des choix impossibles. Elle plaçait le Dimanche ($a_5$) en 4ème position devant le Pass 2 jours parce que Jules avait mis une note artistique maximale de 9.0, compensant complètement le fait que Victor ne puisse pas venir. En pratique, choisir le dimanche aurait exclu Victor du festival. 
 
-\subsection{Négociation collective et sens des noyaux multiples}
-L'identification de trois noyaux uniques pour ELECTRE I ($\gamma = 0.60$) traduit les trois arbitrages fondamentaux de la décision de groupe :
+Grâce à la méthode ELECTRE I, les vetos sur les indisponibilités ont fait leur travail : les options problématiques (Vendredi, Dimanche, Pass 2 jours) ont été immédiatement mises de côté. De plus, ELECTRE I a mis en évidence le fait que le Mercredi ($a_1$) est dominé collectivement par le Samedi ($a_4$). En effet, le samedi est moins cher (94~€ contre 99~€), offre une meilleure satisfaction artistique pour Jules (5 contre 4) et Victor (6 contre 5), pour une disponibilité identique. Le mercredi a donc logiquement été écarté des noyaux.
+
+\subsection{Comment nous avons tranché notre décision}
+La méthode ELECTRE I a simplifié notre problème en un choix final entre seulement deux options (nos deux noyaux) :
 \begin{enumerate}
-    \item \textbf{Le choix orienté Florent ($a_1$ / Mercredi)} : Cette journée satisfait au maximum Florent (note artistique 9.0) et est tout à fait acceptable pour Victor et Jules, avec un coût de 75~€ et une pleine disponibilité.
-    \item \textbf{Le choix orienté Victor ($a_2$ / Jeudi)} : Privilégie la journée favorite de Victor (note 9.0) tout en respectant le budget et l'emploi du temps du groupe.
-    \item \textbf{Le choix du consensus équitable ($a_4$ / Samedi)} : Journée moyenne pour tout le monde (Jules 5.0, Florent 6.0, Victor 6.0) mais sans déception majeure et sans contraintes.
+    \item \textbf{Le choix individuel fort ($a_2$ / Jeudi)} : Journée favorite de Victor (9/10), mais qui laisse Jules et Florent avec des notes très basses (respectivement 3/10 et 4/10).
+    \item \textbf{Le choix du consensus équitable ($a_4$ / Samedi)} : Journée moyenne pour tout le monde (notes de 5, 6, 6) mais sans aucun mécontent et pour un prix raisonnable (94~€).
 \end{enumerate}
 
-Le choix final au sein du groupe peut ainsi s'opérer par une négociation autour de ces trois options dominantes. Par exemple, si Jules (dont les jours préférés Vendredi et Dimanche sont exclus par veto) doit trancher, il aura intérêt à préférer le samedi ($a_4$, note 5.0) comme compromis équitable ou le mercredi ($a_1$, note 4.0) par solidarité avec Florent.
+Pour trancher entre ces deux options, nous avons voté. Comme les billets préférés de Jules (vendredi, dimanche) et de Florent (mercredi) ont été écartés, le choix s'est naturellement porté sur le \textbf{Samedi ($a_4$)} comme compromis. Cela permet de préserver l'entente du groupe en évitant de frustrer Jules ou Florent avec le jeudi. C'est décidé, nous allons prendre nos billets pour le samedi !
 
 ---
 
-\section{Évaluation critique de l'usage de l'IA Générative}
+\section{Retour critique sur notre usage de l'IA Générative}
 \label{sec:evaluation_ia}
 
-\subsection{Nature et volume des requêtes}
-L'IA a été sollicitée pour aider à la modélisation mathématique du problème, au développement du script Python pur et à la structuration du fichier LaTeX, soit 4 requêtes principales au total.
+\subsection{Combien de fois et comment nous l'avons utilisée}
+Nous avons utilisé l'IA pour nous aider sur 4 points clés : structurer notre code Python pur pour faire tourner ELECTRE I, générer la syntaxe du graphe en TikZ pour notre rapport, mettre en forme nos tableaux sous LaTeX, et vérifier la cohérence mathématique de nos calculs.
 
-\subsection{Retours critiques et corrections apportées}
-Nous avons apporté une modification importante au problème initial. Pour éviter un graphe de surclassement trop encombré (avec 9 alternatives, le graphe TikZ devenait illisible et surchargeait le rapport), nous avons simplifié la modélisation à 6 alternatives clés (les 5 jours individuels et le Pass 3 jours). Cette simplification a permis d'obtenir une figure~\ref{fig:graphe_surclassement} extrêmement lisible et élégante tout en conservant intacte la richesse de la confrontation des méthodes (compensation vs veto et noyaux multiples). Nous avons également dû corriger le code Python généré qui utilisait initialement \texttt{numpy}.
+\subsection{Ce que nous avons dû corriger}
+L'IA a d'abord généré un code Python qui utilisait la bibliothèque \texttt{numpy}. Comme nous voulions un code simple et sans dépendances externes faciles à exécuter, nous l'avons réécrit en Python pur. De plus, au début, nous avions modélisé le problème avec des prix génériques de 75~€ par jour et un pass 3 jours à 185~€. L'IA a trouvé 3 noyaux (Mercredi, Jeudi, Samedi). En mettant à jour le modèle avec les prix réels de la billetterie officielle (allant de 89~€ à 99~€ la journée) et en remplaçant le pass 3 jours par le Pass 2 jours réel à 149~€, la modélisation a radicalement changé : le Mercredi s'est fait éliminer par dominance au profit du Samedi. L'IA nous a aidés à recalculer instantanément les nouvelles matrices de concordance et de discordance, et à corriger les arcs du graphe TikZ pour refléter ce nouveau scénario beaucoup plus réaliste.
 
 \subsection{Avantages et inconvénients}
-L'IA s'est révélée précieuse pour la mise en forme du code LaTeX (TikZ et tableaux professionnels) et le calcul automatisé des matrices, nous évitant les erreurs manuelles de calcul de concordance. Cependant, elle requiert une grande vigilance théorique pour corriger ses analyses génériques et s'assurer du respect des spécificités du cours.
+L'avantage principal est le gain de temps sur la programmation brute et la mise en page LaTeX (les tableaux professionnels et TikZ prennent beaucoup de temps à écrire à la main). L'inconvénient est qu'il faut rester très vigilant : l'IA a tendance à proposer des formules ou des codes génériques. Nous avons dû vérifier manuellement chaque ligne de calcul pour nous assurer qu'elle respectait scrupuleusement le formalisme du cours d'Aide à la Décision.
 
 \end{document}
