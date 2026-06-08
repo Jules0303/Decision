@@ -96,53 +96,6 @@ for i in range(num_alts):
         concordance_matrix[i][j] = conc_weight
         discordance_matrix[i][j] = veto_triggered
 
-# Outranking for a given gamma
-def get_outranking_matrix(gamma):
-    outranking = [[0] * num_alts for _ in range(num_alts)]
-    for i in range(num_alts):
-        for j in range(num_alts):
-            if i == j:
-                continue
-            if concordance_matrix[i][j] >= gamma and discordance_matrix[i][j] == 0:
-                outranking[i][j] = 1
-    return outranking
-
-# Kernel calculation
-def find_kernel(outranking_mat):
-    from itertools import combinations
-    kernels = []
-    all_indices = set(range(num_alts))
-    for r in range(1, num_alts + 1):
-        for comb in combinations(range(num_alts), r):
-            K = set(comb)
-            # Check internal stability
-            int_stable = True
-            for u in K:
-                for v in K:
-                    if u != v and outranking_mat[u][v] == 1:
-                        int_stable = False
-                        break
-                if not int_stable:
-                    break
-            
-            if not int_stable:
-                continue
-                
-            # Check external stability
-            ext_stable = True
-            for x in all_indices - K:
-                outranked = False
-                for y in K:
-                    if outranking_mat[y][x] == 1:
-                        outranked = True
-                        break
-                if not outranked:
-                    ext_stable = False
-                    break
-            
-            if ext_stable:
-                kernels.append(list(K))
-    return kernels
 
 # --------------------------------------------------------------------------------
 # GENERATE LATEX CODE SNIPPETS
